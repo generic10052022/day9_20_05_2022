@@ -1,0 +1,463 @@
+package revise;
+
+public class Employee {
+
+}
+
+package revise;
+
+public class ContractEmployee extends Employee {
+private float wages;
+
+public float getWages() {
+	return wages;
+}
+
+public void setWages(float wages) {
+	this.wages = wages;
+}
+
+	
+	
+}
+
+
+package revise;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		Employee employee=new Employee();
+		ContractEmployee contractEmployee=new ContractEmployee();
+		PermanentEmployee permanentEmployee=new PermanentEmployee();
+		System.out.println(employee instanceof Employee);
+		employee=contractEmployee;
+		System.out.println(employee instanceof ContractEmployee);
+		System.out.println(employee instanceof PermanentEmployee);
+		System.out.println(employee instanceof Employee);
+		System.out.println(employee instanceof Object);
+		employee=new Employee();
+		System.out.println(employee instanceof ContractEmployee);
+		System.out.println(employee instanceof PermanentEmployee);
+		System.out.println(employee instanceof Object);
+		
+		
+
+	}
+
+}
+
+
+package revise;
+
+public class Main2 {
+
+	public static void main(String[] args) {
+	Employee emp=new ContractEmployee();
+	//emp.setWages(2000);
+	// We need typecast or downcast emp back to ContractEmployee
+	ContractEmployee ce=(ContractEmployee)emp;
+	ce.setWages(2300.00f);
+	
+	//PermanentEmployee pe=(PermanentEmployee)emp;
+	/* Exception in thread "main" java.lang.ClassCastException: class revise.ContractEmployee cannot be cast to class revise.PermanentEmployee (revise.ContractEmployee and revise.PermanentEmployee are in unnamed module of loader 'app')
+	at revise.Main2.main(Main2.java:12) */
+	if(emp instanceof ContractEmployee)
+	{
+	 	ContractEmployee ce2=(ContractEmployee)emp;
+	    ce2.setWages(0);
+	}
+	else
+	{
+	  PermanentEmployee pe=(PermanentEmployee)emp;
+	   pe.setBasic(0);
+	}
+
+	
+	
+
+	}
+
+}
+
+
+package revise;
+
+public class Main3 {
+
+	public static void main(String[] args) {
+	Employee employees[]=new Employee[3];
+	
+	employees[0]=new ContractEmployee();
+	employees[1]=new PermanentEmployee();
+	employees[2]=new ContractEmployee();
+	
+	for(Employee emp : employees)
+	{
+		if(emp instanceof ContractEmployee)
+		{
+			ContractEmployee ce=(ContractEmployee)emp;
+			System.out.println("The contract employee");
+		     System.out.println(ce.getWages());
+		}
+		else
+		{
+			PermanentEmployee pe=(PermanentEmployee)emp;
+			System.out.println("The permanent employee");
+		     System.out.println(pe.getBasic());
+		}
+	}
+	
+	}
+
+}
+
+
+
+------------------------------------------------------------------------------------------------------------------
+public class Model {
+private int modelId;
+private int modelGrade;
+private double remunerationPerDay;
+private static double modelRemuneration[]={25000.0,30000.0,45000.0,57500.0,100000.0,150000};
+
+public Model(int modelId, double remunerationPerDay){
+   this.modelId=modelId;
+   this.remunerationPerDay=remunerationPerDay;
+   this.modelGrade=modelId/10000;
+ }
+
+getters/setters
+public boolean validateRemunerationPerDay(){
+  boolean validRemunerationPerDay=false;
+  if(remunerationPerDay>modelRemuneration[modelGrade-1] && remunerationPerDay<=modelRemuneration[modelGrade])
+     {
+         validRemunerationPerDay=true;
+     }
+    return validRemunerationPerDay;
+}
+
+}
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+public class AdAgencyService{
+protected String quotationId;
+private String customerType;
+private Model model;
+private static int counter=1001;
+
+public AdAgencyService(Model model, String customerType){
+    this.model=model;
+    this.customerType=customerType;
+}
+
+public String getQuotationId(){
+         quotationId=getCustomerType().substring(0,3).toUpperCase()+counter;
+}
+ 
+
+public String getCustomerType(){
+   return customerType;
+}
+
+
+
+public void identifyCustomerType(){
+if( !(getCustomerType().equalsIgnoreCase("Government") || getCustomerType().customerType.equalsIgnoreCase("Public") && getCustomerType().equalsIgnoreCase("Private")))
+{
+customerType="private";
+}
+
+}
+
+public long calculateQuotationAmount(){
+  long a=500L;
+  return a;
+} 
+
+
+}
+
+
+
+
+public class AdMovies extends AdAgencyService {
+private double noOfDaysOfShooting;
+private char typeOfAdMovie;
+
+public AdMovies(Model model, String customerType, double noOfDaysOfShooting, char typeOfAdMovie){
+super(model,customerType);
+this.noOfDaysOfShooting=noOfDaysOfShooting;
+this.typeOfAdMovie=typeOfAdMovie;
+}
+
+//setters/getters
+pubic boolean validateNoOfDaysOfShooting(){
+boolean isValidDays=false;
+if(noOfDaysOfShooting>=2.0 && noOfDaysOfShooting<=100.0){
+ isValidDays=true;
+}
+return isValidDays;
+}
+
+public boolean validateTypeOfAdMovie(){
+boolean isValidTypeOfAdMovie=false;
+if(typeOfAdMovie=='H' || typeOfAdMovie=='A' || typeOfAdMovie=='L'){
+  isValidTypeOfAdMovie=true;
+} 
+ return isValidTypeOfAdMovie;
+}
+
+
+
+public long calculateQuotationAmount(){
+int budget=0;
+double totalBudget;
+double tax=0;
+double serviceCharge=0;
+long quotationAmount;
+long actualNumberOfShootingDays=Math.floor(noOfDaysOfShooting);
+long baseQuotationAmount=calculateQuotationAmount();
+if(model.validateRemunerationPerDay() && validateNoOfDaysOfShooting() && validateTypeOfAdMovie())
+{
+ if(typeOfAdMovie=='H'){
+   budget=2500000;
+   serviceCharge=25.25;
+ }
+else if(typeOfAdMovie=='A'){
+   budget=2000000;
+   serviceCharge=17.5;
+}
+else if(typeOfAdMovie=='L'){
+   budget=1500000;
+   serviceCharge=12.75;
+}
+
+if(getCustomerType().equals("government")){
+ tax=0.0;
+}
+else if(getCustomerType().equals("public")){
+ tax=15.75;
+}
+else if(getCustomerType().equals("private")){
+ tax=20.25;
+}
+totalBudget=budget+getRemunerationPerDay()*actualNumberOfShootingDays;
+totalBudget=totalBudget+(totalBudget*serviceChange/100)+(totalBudget*tax/100);
+quotationAmount=totalBudget+baseQuotientAmount;
+return quotationAmount;
+}
+
+return -1;
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+public class Tester {}
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+public class RegularExpressionDemo1 {
+public static void main(String args[])
+{
+	Scanner scan=new Scanner(System.in);
+	String str=scan.next();
+	String pattern="^(DSK|LTP|IPH)-\\d{6}[hHlL]$";
+	if(str.matches(pattern))
+	{
+		System.out.println("Valid");
+	}
+	else
+	{
+		System.out.println("Invalid");
+	}
+}
+}
+
+-------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+ public class RegularExpressionDemo2 {
+
+	 // We are looking for a single character which contains alphabet
+    public static void main(String[] args) {
+ 
+     String pattern1="^[a-z0-9A-Z]+$";// ^ we are looking for a pattern at the begining $pattern at the end
+                               // The significance of using both means we are looking for a pattern 
+                               // which represents a single word
+                              // [abc] the characters within the [] signifies either of the character
+     String str1a="Dd12";        // either a or b or c
+                                    // + one of more characters
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+ }
+--------------------------------------------------------------------------------------------------------------------------------------
+public class RegularExpressionDemo3 {
+
+	 // We are looking for a single character which contains alphabet
+    public static void main(String[] args) {
+ 
+     String pattern1="^c.t$"; // , can be replaced by any other character
+     String str1a="caat";       
+                                    
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+ }
+-------------------------------------------------------------------------------------------------------------------------
+public class RegularExpressionDemo4 {
+
+	 // We are looking for a single character which contains alphabet
+    public static void main(String[] args) {
+ 
+     String pattern1="^(manager)|(asstmgr)|(typist)$"; // , can be replaced by any other character
+     String str1a="manager";       
+                                    
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+ }
+-------------------------------------------------------------------------------------------
+public class RegularExpressionDemo5 {
+
+	 // We are looking for a single character which contains alphabet
+    public static void main(String[] args) {
+ 
+     String pattern1="^[^a-zA-Z]+$"; // , can be replaced by any other character
+     String str1a="manager";       
+                                    
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+ }
+----------------------------------------------------------
+
+public class RegularExpressionDemo6 {
+
+	 // We are looking for a single character which contains alphabet
+    public static void main(String[] args) {
+ 
+     //String pattern1="^[a-zA-Z0-9]?$"; 
+    	String pattern1="^[a-zA-Z35]?$"; 
+     String str1a="5";       
+                                    
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+ }
+------------------------------------------------------------------------------------
+public class RegularExpressionDemo7 {
+
+	 // We are looking for alphabets minimum 2 and maximum 6
+    public static void main(String[] args) {
+ 
+     String pattern1="^[a-zA-Z]{2,6}$"; 
+     String pattern2="^[a-zA-Z]{6}$"; // exactly 6 characters which are either in smallcase or in uppercase
+    	
+     String str1a="a";       
+                                    
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+ }
+------------------------------------------------
+public class RegularExpressionDemo8{
+
+	
+    public static void main(String[] args) {
+ 
+     String pattern1="^\\w+$";
+     String str1a="Dd_$12";      
+                                    
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+ }
+[Not matched because of $]
+public class RegularExpressionDemo9{
+
+	
+    public static void main(String[] args) {
+ 
+     String pattern1="^\\W+$";
+     String str1a="#$@";      
+                                    
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+ }
+-----------------------------------------------------------------
+public class RegularExpressionDemo10{
+
+	
+    public static void main(String[] args) {
+ 
+     String pattern1="^\\d{10}$";
+     String str1a="98303943342";      
+                                    
+     if(str1a.matches(pattern1)){
+      System.out.println("Matched");
+     }
+     else{
+     System.out.println("Not matched");
+     }
+   }
+}
+------------------------
